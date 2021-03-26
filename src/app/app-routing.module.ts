@@ -1,11 +1,17 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { SignInComponent } from './sign-in/sign-in.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
 
 const routes: Routes = [
   {
     path: 'sign-in',
     component: SignInComponent
+    //loadChildren: () => import('./sign-in/sign-in.module').then( m => m.SignInModule),
+  },
+  {
+    path: 'sign-up',
+    component: SignUpComponent
     //loadChildren: () => import('./sign-in/sign-in.module').then( m => m.SignInModule),
   },
   {
