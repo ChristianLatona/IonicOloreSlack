@@ -1,14 +1,16 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { SignInComponent } from './sign-in/sign-in.component';
 
 const routes: Routes = [
   {
-    path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    path: 'sign-in',
+    component: SignInComponent
+    //loadChildren: () => import('./sign-in/sign-in.module').then( m => m.SignInModule),
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'sign-in',
     pathMatch: 'full'
   },
 ];
