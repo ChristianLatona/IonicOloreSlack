@@ -8,11 +8,14 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SignInModule } from './sign-in/sign-in.module';
 import { SignUpModule } from './sign-up/sign-up.module';
+import { enterAnimation } from './animations/nav-animation';
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,SignInModule,SignUpModule],
+  imports: [BrowserModule, IonicModule.forRoot({
+    navAnimation:enterAnimation
+  }), AppRoutingModule,SignInModule,SignUpModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })
