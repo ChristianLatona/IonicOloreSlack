@@ -1,6 +1,6 @@
 
 <div id="container">
-  <br>
+  <br><br>
   <p>Sign Up</p>
   <ion-item>
     <ion-label position="stacked">Username</ion-label>
@@ -22,7 +22,7 @@
     <ion-input type="password"></ion-input>
   </ion-item>
   <br>
-  <ion-button color="danger">Sign Up</ion-button>
+  <ion-button color="danger" (click)="navToHome()">Sign Up</ion-button>
   <br><br>
   <h6 id="grey-p">Already have an account? <a (click)="navigateToSignIn()">Sign In</a></h6>
 </div>

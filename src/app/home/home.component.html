@@ -1,0 +1,25 @@
+<div id="spacing-56px">
+  <br>
+  <h1>Welcome,<br>Username</h1><br>
+  <ion-button size="large" color="danger" (click)="workspacesActionSheet()">Enter Workspace</ion-button>
+  <br><br>
+  <ion-item class="ion-no-padding">
+    <ion-label position="stacked">Join Workspace</ion-label>
+    <ion-input></ion-input>
+  </ion-item>
+  <br>
+  <ion-button color="danger" (click)="navToHome()">Join</ion-button>
+  <br><br>
+  <ion-item class="ion-no-padding">
+    <ion-label position="stacked">Create Workspace</ion-label>
+    <ion-input></ion-input>
+  </ion-item>
+  <br>
+  <ion-button color="danger" (click)="navToHome()">Create</ion-button>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="danger" (click)="settingsActionSheet()">
+      <ion-icon name="settings-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</div>

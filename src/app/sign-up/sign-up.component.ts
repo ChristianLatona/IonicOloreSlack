@@ -13,5 +13,7 @@ export class SignUpComponent{
   navigateToSignIn(){
     this.router.navigate(['/sign-in'])
   }
-
+  navToHome(){
+    this.router.navigate(['/home'])
+  }
 }

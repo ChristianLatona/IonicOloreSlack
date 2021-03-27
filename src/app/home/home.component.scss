@@ -1,0 +1,30 @@
+#spacing-56px{
+    margin-top: 56px;
+    display: flex;
+    align-items:flex-start;
+    flex-direction: column;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+h1{
+    position: relative;
+    font-size: 23px;
+    line-height: 26px;
+    font-weight: bold;
+}
+
+ion-item ion-label{
+    font-size: 23px;
+    color: red;
+    font-weight:500;
+    padding-inline-start: 0;
+}
+
+.item-native {
+    padding-inline-start: 0;
+}
+
+ion-button{
+    width: 100%;
+}
