@@ -9,7 +9,7 @@ export const enterAnimation = (baseEl:HTMLElement,opts?:any):Animation =>{
     //if(opts.direction === "forward"){
         return animationCtrl.create()
         .addElement(opts.enteringEl)
-        .duration(0)
+        .duration(DURATION)
         .easing("ease-in")
         .fromTo("opacity",0,1)
     //}
