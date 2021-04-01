@@ -3,12 +3,12 @@
   <p>Sign In</p>
   <ion-item>
     <ion-label position="stacked">Username</ion-label>
-    <ion-input></ion-input>
+    <ion-input [(ngModel)]="username"></ion-input>
   </ion-item>
   <br>
   <ion-item>
     <ion-label position="stacked">Password</ion-label>
-    <ion-input type="password"></ion-input>
+    <ion-input type="password" [(ngModel)]="password"></ion-input>
   </ion-item>
   <br>
   <ion-button color="danger" (click)="navToHome()">Sign In</ion-button>

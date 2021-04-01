@@ -1,5 +1,6 @@
 import { Component} from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -7,8 +8,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./sign-in.component.scss'],
 })
 export class SignInComponent {
+  username: string
+  password: string
 
-  constructor(private router:Router) { }
+  constructor(private router:Router,private auth:AuthService) { }
 
   navigateToSignUp(){
     this.router.navigate(['/sign-up'])
@@ -16,6 +19,10 @@ export class SignInComponent {
 
   navToHome(){
     this.router.navigate(['/home'])
+  }
+
+  signIn(){
+    this.auth.signIn("","")//fixare il backend prima
   }
 
 }

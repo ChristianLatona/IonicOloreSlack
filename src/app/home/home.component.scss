@@ -12,16 +12,14 @@ h1{
     font-size: 23px;
     line-height: 26px;
     font-weight: bold;
+    text-align: center;
+    align-self: center;
 }
 
 ion-item ion-label{
     font-size: 23px;
     color: red;
     font-weight:500;
-    padding-inline-start: 0;
-}
-
-.item-native {
     padding-inline-start: 0;
 }
 
