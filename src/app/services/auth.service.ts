@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -9,29 +8,32 @@ export class AuthService {
   private genericUrl='http://localhost:3000/auth/'
   constructor(private http: HttpClient) {}
 
-  signIn = async (email,password) => {//ho tolto i generics x ora, l'idea è di prendere solo lo status code, visto che i messages sono useless
-  //forse nel subscribe prende pure lo status code
-    let data = this.http.post(`${this.genericUrl}login`, null, {headers: {email, password}}).toPromise() as Promise<{token:string, message:string}>
-    //await this.http.post(`${this.genericUrl}login`, null,{headers:{email,password}}).subscribe((value) => data=value)
-    //Il subscribe funziona e prende il valore, però quando provo a stamparlo su signIn da undefined
-    //Con il subscribe non mi permetteva di fare la destrutturazione in signIn
-    return data
+  signIn = async(email:string,password:string) => {
+    let error;
+    try{
+      let data = await this.http.post(`${this.genericUrl}login`, null, {headers: {email, password}, observe: "response"}).toPromise() as HttpResponse<Object>
+      return data
+    }catch({error:{message}}){
+      error = message;
+    }
+    return error;
+  }
+  //Il logout non funziona con panetty, ma funzione con test
+  //Cose strane accadono
+  logout = (tkn:string) => {
+    try{
+      this.http.delete(`${this.genericUrl}logout`,{headers:{tkn}}).toPromise() as Promise<{message:string}>
+    }catch(e){
+      console.log("errore",e)
+    }
   }
 
-  signOut(tkn){
-    return this.http.delete(this.genericUrl+"logout",{headers:{tkn}})
+  register = (username:string,email:string,password:string) => this.http.post(`${this.genericUrl}register`,{headers:{username,email,password}, observe:"response"}).toPromise() as Promise<HttpResponse<Object>>
+
+  deleteAccount = async (tkn:string) => {
+    let {body} = await this.getEmail(tkn)
+    return this.http.delete(`${this.genericUrl}user`,{headers:{email:body as string}, observe:"response"}).toPromise() as Promise<HttpResponse<Object>>
   }
 
-  register(username,email,password){
-    return this.http.post(this.genericUrl+"register",{headers:{username:username,email:email,password:password}})
-  }
-
-  deleteAccount(email){
-    return this.http.delete(this.genericUrl+"user",{headers:{email:email}})
-  }
-
-  //nell' auth?
-  getEmail(tkn){
-    return this.http.get(this.genericUrl+"email",{headers:{tkn:tkn}})
-  }
+  getEmail = (tkn:string) => this.http.get(`${this.genericUrl}email`,{headers:{tkn}, observe:"response"}).toPromise() as Promise<HttpResponse<Object>>
 }

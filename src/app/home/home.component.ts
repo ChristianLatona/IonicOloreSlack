@@ -1,31 +1,76 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ActionSheetController } from '@ionic/angular';
+import { AuthService } from '../services/auth.service';
+import { HomeService } from '../services/home.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent{
+export class HomeComponent implements OnInit{
+  username:string;
+  userToken:string;
+  workspacesList:{id:string, name:string}[] = []
+  purpleColor="rgb(156,3,177)"
+  work_id:string//conservare qui l'id della workspace cliccata
+  workspaceName:string
+  constructor(public actionSheetController: ActionSheetController, private home:HomeService, private auth:AuthService, private router: Router) {}
+  
+  async ngOnInit(){
+    sessionStorage.getItem("userTkn") && (this.userToken = sessionStorage.getItem("userTkn"));
+    sessionStorage.getItem("username") && (this.username = sessionStorage.getItem("username"));
+    let {body} = await this.home.workspacesList(this.userToken);
+    this.workspacesList = body as {id:string, name:string}[];
+    console.log(this.workspacesList);
+  }
 
-  constructor(public actionSheetController: ActionSheetController) {}
+  private navigate(path:string){
+    this.router.navigate([`/${path}`])
+  }
 
-  async settingsActionSheet() {
+  enterWorkspace = (workspace_id:string) => {
+    sessionStorage.setItem("workspace_id", workspace_id);
+    console.log(workspace_id)
+    //this.navigate("workspace");
+  }
+
+  joinWorkspace = async () => {
+    const {status,body} = await this.home.joinWorkspace(this.userToken,this.work_id)
+    console.log("HomeComponent riga 41", status, body)
+    //this.navigate("workspace")// da fare, antonio
+  }
+
+  createWorkspace = async () => {
+    let  {status,body} = await this.home.createWorkspace(this.userToken,this.workspaceName)
+    body = body as {message:string, workspaceId:string}
+    console.log("HomeComponent riga 48", body);
+    //status == 200 && this.navigate("workspace");
+  }
+
+  settingsActionSheet = async() => {
     const actionSheet = await this.actionSheetController.create({
       header: 'Account',
       cssClass: 'my-custom-class',
       buttons: [{
-        text: 'Delete',
+        text: 'Delete Account',
         role: 'destructive',
         icon: 'trash',
         handler: () => {
-          console.log('Delete clicked');
+          this.auth.deleteAccount(this.userToken)
+          sessionStorage.removeItem("userTkn");
+          sessionStorage.removeItem("username");
+          this.navigate("")
         }
       }, {
         text: 'Logout',
-        icon: 'log-out-outline',
+        icon: 'exit',
         handler: () => {
-          console.log('Share clicked');
+          this.auth.logout(this.userToken)
+          sessionStorage.removeItem("userTkn");
+          sessionStorage.removeItem("username");
+          this.navigate("")
         }
       }, {
         text: 'Cancel',
@@ -40,44 +85,36 @@ export class HomeComponent{
   }
 
   async workspacesActionSheet() {
+    let buttonsList = []
+    if(this.workspacesList.length > 0){
+      this.workspacesList.forEach(workspace => {
+        buttonsList.push({
+          text: workspace.name,
+          icon: '',
+          role: '',
+          handler: () => {
+            this.enterWorkspace(workspace.id)
+          }
+        })
+      })
+    }
+    buttonsList.push({
+      text: 'Cancel',
+      icon: 'close',
+      role: 'cancel',
+      handler: () => {
+        console.log('Cancel clicked');
+      }
+    })
+
     const actionSheet = await this.actionSheetController.create({
-      header: 'Albums',
+      header: 'Workspaces List',
       cssClass: 'my-custom-class',
-      buttons: [{
-        text: 'Delete',
-        role: 'destructive',
-        icon: 'trash',
-        handler: () => {
-          console.log('Delete clicked');
-        }
-      }, {
-        text: 'Share',
-        icon: 'share',
-        handler: () => {
-          console.log('Share clicked');
-        }
-      }, {
-        text: 'Play (open modal)',
-        icon: 'caret-forward-circle',
-        handler: () => {
-          console.log('Play clicked');
-        }
-      }, {
-        text: 'Favorite',
-        icon: 'heart',
-        handler: () => {
-          console.log('Favorite clicked');
-        }
-      }, {
-        text: 'Cancel',
-        icon: 'close',
-        role: 'cancel',
-        handler: () => {
-          console.log('Cancel clicked');
-        }
-      }]
+      buttons: buttonsList
     });
+    
+    console.log(actionSheet.buttons)
     await actionSheet.present();
   }
-
 }
+

@@ -1,26 +1,29 @@
 <div id="container">
   <p>Sign Up</p>
-  <ion-item>
+  <ion-item [style.--highlight-color-focused]="purpleColor">
     <ion-label position="stacked">Username</ion-label>
-    <ion-input></ion-input>
+    <ion-input [(ngModel)]="username" ></ion-input>
   </ion-item>
   <br>
-  <ion-item>
+  <ion-item [style.--highlight-color-focused]="purpleColor">
     <ion-label position="stacked">Email</ion-label>
-    <ion-input></ion-input>
+    <ion-input type="email" [(ngModel)]="email"></ion-input>
   </ion-item>
   <br>
-  <ion-item>
+  <ion-item [style.--highlight-color-focused]="purpleColor">
     <ion-label position="stacked">Password</ion-label>
-    <ion-input type="password"></ion-input>
+    <ion-input type="password" [(ngModel)]="password"></ion-input>
   </ion-item>
   <br>
-  <ion-item>
+  <ion-item [style.--highlight-color-focused]="purpleColor">
     <ion-label position="stacked">Confirm password</ion-label>
-    <ion-input type="password"></ion-input>
+    <ion-input type="password" [(ngModel)]="confirmPassword"></ion-input>
   </ion-item>
   <br>
-  <ion-button color="danger" (click)="navToHome()">Sign Up</ion-button>
+  <ion-button color="danger" (click)="register()">Sign Up</ion-button>
+  <div *ngIf="password != confirmPassword || gotError == true">
+    <p style="color: red;">{{message}}</p>
+  </div>
   <br><br>
-  <h6 id="grey-p">Already have an account? <a (click)="navigateToSignIn()">Sign In</a></h6>
+  <h6 id="grey-p">Already have an account? <a (click)="navigate('sign-in')">Sign In</a></h6>
 </div>

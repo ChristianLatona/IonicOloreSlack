@@ -1,18 +1,18 @@
 <div id="spacing-56px">
   <br>
-  <h1>Welcome,<br>Username</h1><br>
+  <h1>Welcome,<br>{{username}}</h1><br>
   <ion-button size="large" color="danger" (click)="workspacesActionSheet()">Enter Workspace</ion-button>
   <br><br>
-  <ion-item class="ion-no-padding">
+  <ion-item class="ion-no-padding" [style.--highlight-color-focused]="purpleColor">
     <ion-label position="stacked">Join Workspace</ion-label>
-    <ion-input></ion-input>
+    <ion-input [(ngModel)]='work_id'></ion-input>
   </ion-item>
   <br>
   <ion-button color="danger" (click)="navToHome()">Join</ion-button>
   <br><br>
-  <ion-item class="ion-no-padding">
+  <ion-item class="ion-no-padding" [style.--highlight-color-focused]="purpleColor">
     <ion-label position="stacked">Create Workspace</ion-label>
-    <ion-input></ion-input>
+    <ion-input [(ngModel)]="workspaceName"></ion-input>
   </ion-item>
   <br>
   <ion-button color="danger" (click)="navToHome()">Create</ion-button>
