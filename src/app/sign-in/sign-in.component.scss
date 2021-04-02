@@ -1,9 +1,21 @@
+  // #spacing-56px{
+  //   margin-top: 56px;
+  //   display: flex;
+  //   align-items:flex-start;
+  //   flex-direction: column;
+  // }
+  
   #container {
-    position: absolute;
-    left: 5%;
-    right: 5%;
-    top: 30%;
-    transform: translateY(-50%);
+    // position: absolute;
+    // left: 5%;
+    // right: 5%;
+    // top: 30%;
+    // transform: translateY(-50%);
+    margin-top: 56px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 15%;
+    margin-right: 15%;
   }
   
   #container p{

@@ -1,9 +1,8 @@
 <div id="container">
-  <br>
   <p>Sign In</p>
   <ion-item>
-    <ion-label position="stacked">Username</ion-label>
-    <ion-input [(ngModel)]="username"></ion-input>
+    <ion-label position="stacked">Email</ion-label>
+    <ion-input [(ngModel)]="email"></ion-input>
   </ion-item>
   <br>
   <ion-item>
@@ -11,7 +10,7 @@
     <ion-input type="password" [(ngModel)]="password"></ion-input>
   </ion-item>
   <br>
-  <ion-button color="danger" (click)="navToHome()">Sign In</ion-button>
+  <ion-button color="danger" (click)="signIn()">Sign In</ion-button>
   <br><br>
   <h6 id="grey-p">You don't have an account? <a (click)="navigateToSignUp()">Sign Up</a></h6>
 </div>
