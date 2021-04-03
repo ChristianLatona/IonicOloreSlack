@@ -3,6 +3,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
+import { WorkspaceComponent } from './workspace/workspace.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,10 @@ const routes: Routes = [
     path: 'home',
     component: HomeComponent
     //loadChildren: () => import('./sign-in/sign-in.module').then( m => m.SignInModule),
+  },
+  {
+    path: 'workspace',
+    component: WorkspaceComponent
   },
   {
     path: '',

@@ -13,8 +13,9 @@ export class SignUpComponent{
   email:string
   password:string
   confirmPassword:string
-  message:string="Passwords does not match!"
-  gotError:boolean=false
+  message:string;
+  showMessage:boolean = false;
+  showSuccess:boolean = false;
   constructor(private router:Router, private auth:AuthService) { }
 
   private navigate(path:string){
@@ -22,15 +23,20 @@ export class SignUpComponent{
   }
 
   async register(){
-    if(this.password==this.confirmPassword ){
-      const {status,body}= await this.auth.register(this.username,this.email,this.password)
-      let {message} = body as {message:string}
-      if(status==200){
-        this.navigate("home")
+    this.showMessage = true;
+    if(this.password===this.confirmPassword ){
+      const data = await this.auth.register(this.username,this.email,this.password)
+      if(typeof data != 'string'){
+        this.showSuccess = true;
+        this.message = "Succesfull registration, You will be redirected to the login."
+        setTimeout(() => {
+          this.navigate("sign-in")
+        }, 3000)
       }else{
-        this.message= message
-        this.gotError=true
+        this.message = data as string 
       }
+    }else{
+      this.message = "Password do not match!"
     }
   }
 }

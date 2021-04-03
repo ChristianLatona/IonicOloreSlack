@@ -10,7 +10,6 @@ import { AuthService } from '../services/auth.service';
 export class SignInComponent {
   email: string
   password: string
-  purpleColor = "rgb(156,3,177)"
   gotError: boolean
   message: string=""
 

@@ -21,8 +21,8 @@
   </ion-item>
   <br>
   <ion-button color="danger" (click)="register()">Sign Up</ion-button>
-  <div *ngIf="password != confirmPassword || gotError == true">
-    <p style="color: red;">{{message}}</p>
+  <div *ngIf="showMessage == true">
+    <p [ngStyle]="{'color': showSuccess ? 'green' : 'red'}">{{message}}</p>
   </div>
   <br><br>
   <h6 id="grey-p">Already have an account? <a (click)="navigate('sign-in')">Sign In</a></h6>
