@@ -5,23 +5,23 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ChannelService {
-  private genericUrl='http://localhost:4200/channels/'
+  private genericUrl='http://localhost:3000/channels/'
   constructor(private http: HttpClient) { }
 
   getChannelName = async(channel_id:string) => {
-    return await this.http.get(`${this.genericUrl}`,{headers:{channel_id:channel_id},observe: 'response' }).toPromise() as HttpResponse<Object>
+    return await this.http.get(`${this.genericUrl}`,{headers:{channel_id},observe: 'response' }).toPromise() as HttpResponse<Object>
   }
 
   getAllMessages = async(channel_id:string) => {
-    return await this.http.get(`${this.genericUrl}messages`,{headers:{channel_id:channel_id},observe: 'response' }).toPromise() as HttpResponse<Object>
+    return await this.http.get(`${this.genericUrl}messages`,{headers:{channel_id},observe: 'response' }).toPromise() as HttpResponse<Object>
   }
 
   getAllUsers = async(channel_id:string) => {
-    return await this.http.get(`${this.genericUrl}users`,{headers:{channel_id:channel_id},observe: 'response' }).toPromise() as HttpResponse<Object>
+    return await this.http.get(`${this.genericUrl}users`,{headers:{channel_id},observe: 'response' }).toPromise() as HttpResponse<Object>
   }
 
   getUsername = async(user_email:string) => {
-    return await this.http.get(`${this.genericUrl}users/user`,{headers:{user_email:user_email},observe: 'response' }).toPromise() as HttpResponse<Object>
+    return await this.http.get(`${this.genericUrl}users/user`,{headers:{user_email},observe: 'response' }).toPromise() as HttpResponse<Object>
   }
 
   createMessage = async(channel_id:string,user_email:string) => {
