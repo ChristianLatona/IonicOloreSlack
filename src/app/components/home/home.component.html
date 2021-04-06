@@ -1,0 +1,35 @@
+<ion-app>
+  <ion-header [translucent]="true">
+    <ion-toolbar>
+      <ion-title>
+        Oloreslack
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div id="spacing-56px">
+    <br>
+    <h1>Welcome,<br>{{username}}</h1><br>
+    <ion-button size="large" color="danger" (click)="workspacesActionSheet()">Enter Workspace</ion-button>
+    <br><br>
+    <ion-item class="ion-no-padding">
+      <ion-label position="stacked">Join Workspace</ion-label>
+      <ion-input [(ngModel)]='work_id'></ion-input>
+    </ion-item>
+    <br>
+    <ion-button color="danger" (click)="joinWorkspace()">Join</ion-button>
+    <br><br>
+    <ion-item class="ion-no-padding">
+      <ion-label position="stacked">Create Workspace</ion-label>
+      <ion-input [(ngModel)]="workspaceName"></ion-input>
+    </ion-item>
+    <br>
+    <ion-button color="danger" (click)="createWorkspace()">Create</ion-button>
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button color="danger" (click)="settingsActionSheet()">
+        <ion-icon name="settings-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </div>
+</ion-app>
