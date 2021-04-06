@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouteReuseStrategy } from '@angular/router';
+import { ActivatedRouteSnapshot, RouteReuseStrategy, RouterModule } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
@@ -28,7 +28,8 @@ import { WorkspaceModule } from './components/workspace/workspace.module';
     SignUpModule,
     HttpClientModule,
     HomeModule,
-    WorkspaceModule
+    WorkspaceModule,
+    RouterModule
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

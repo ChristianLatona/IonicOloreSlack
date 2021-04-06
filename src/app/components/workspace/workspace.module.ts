@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { WorkspaceComponent } from './workspace.component';
 import { CreateChannelModalComponent } from '../create-channel-modal/create-channel-modal.component';
+import { ActivatedRouteSnapshot, RouterModule } from '@angular/router';
 
 
 
@@ -13,7 +14,8 @@ import { CreateChannelModalComponent } from '../create-channel-modal/create-chan
     CommonModule,
     FormsModule,
     IonicModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule
   ],
   exports:[WorkspaceComponent],
   entryComponents: [CreateChannelModalComponent]

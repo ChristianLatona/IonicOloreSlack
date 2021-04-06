@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { AlertController, MenuController, ModalController } from '@ionic/angular';
 import { WorkspaceService } from 'src/app/services/workspace.service';
 import { CreateChannelModalComponent } from '../create-channel-modal/create-channel-modal.component';
@@ -13,12 +14,14 @@ export class WorkspaceComponent implements OnInit {
   workspace_name:string;
   channels:{id:string, name:string}[] = [];
   users:{email:string, username:string}[] = [];
+
   channelSelected:Boolean=false
   constructor(
     private menu:MenuController, 
     private workspaceService:WorkspaceService, 
     private modalCtrl:ModalController,
-    private alertCtrl:AlertController
+    private alertCtrl:AlertController,
+    private router:Router
     ) { }
 
   async ngOnInit() {
@@ -47,8 +50,9 @@ export class WorkspaceComponent implements OnInit {
     this.users = body as {email:string, username:string}[]
   }
 
-  navigate = (selectedWorkspace:string) => {
+  navigate = (selectedChannel:string) => {
     this.channelSelected=true
+    this.router.navigateByUrl(`/channel/${selectedChannel}`);
   }
 
   addChannel = async () => {
