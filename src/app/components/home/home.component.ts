@@ -1,22 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActionSheetController } from '@ionic/angular';
-import { AuthService } from '../services/auth.service';
-import { HomeService } from '../services/home.service';
+import { AuthService } from '../../services/auth.service';
+import { HomeService } from '../../services/home.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit{
+export class HomeComponent implements OnInit,OnDestroy{
   username:string;
   userToken:string;
   workspacesList:{id:string, name:string}[] = []
   //purpleColor="rgb(156,3,177)"
   work_id:string//conservare qui l'id della workspace cliccata
   workspaceName:string
+
   constructor(public actionSheetController: ActionSheetController, private home:HomeService, private auth:AuthService, private router: Router) {}
+  
+  ngOnDestroy() {
+    sessionStorage.removeItem("userTkn");
+    sessionStorage.removeItem("username");
+    sessionStorage.removeItem("workspace_id");
+  }
   
   async ngOnInit(){
     sessionStorage.getItem("userTkn") && (this.userToken = sessionStorage.getItem("userTkn"));
@@ -32,7 +39,6 @@ export class HomeComponent implements OnInit{
 
   enterWorkspace = (workspace_id:string) => {//Funziona
     sessionStorage.setItem("workspace_id", workspace_id);
-    console.log(workspace_id)
     this.navigate("workspace");
   }
 
@@ -64,7 +70,7 @@ export class HomeComponent implements OnInit{
         role: 'destructive',
         icon: 'trash',
         handler: async () => {
-          this.auth.deleteAccount(this.userToken)
+          await this.auth.deleteAccount(this.userToken)
           this.userToken = '';
           this.username = '';
           sessionStorage.removeItem("userTkn");
@@ -75,8 +81,8 @@ export class HomeComponent implements OnInit{
       }, {
         text: 'Logout',
         icon: 'exit',
-        handler: () => {
-          this.auth.logout(this.userToken)
+        handler: async () => {
+          await this.auth.logout(this.userToken)
           sessionStorage.removeItem("userTkn");
           sessionStorage.removeItem("username");
           sessionStorage.removeItem("workspace_id");

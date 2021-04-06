@@ -6,12 +6,16 @@ import { Injectable } from '@angular/core';
 })
 export class WorkspaceService {
 
-  private genericUrl='http://localhost:3000/workspace/'
+  private genericUrl='http://localhost:3000/workspaces/'
   constructor(private http: HttpClient) { }
 
   //l'observe:response dovrebbe prendere tutto il json
   getWorkspaceName = async(workspace_id:string) => {
-    return await this.http.get(`${this.genericUrl}`,{headers:{workspace_id},observe: 'response' }).toPromise() as HttpResponse<Object>
+    try{
+      return await this.http.get(`${this.genericUrl}`,{headers:{workspace_id},observe: 'response' }).toPromise() as HttpResponse<Object>
+    }catch(e){
+      console.log(e);
+    }
   }
 
   createChannel = async(workspace_id:string,tkn:string,channelName:string,privacy:Boolean) => {
@@ -19,7 +23,7 @@ export class WorkspaceService {
   }
 
   getChannels = async(workspace_id:string) => {
-    return this.http.get(`${this.genericUrl}channels`,{headers:{workspace_id},observe: 'response' }).toPromise() as Promise<HttpResponse<Object>>
+    return await this.http.get(`${this.genericUrl}channels`,{headers:{workspace_id},observe: 'response' }).toPromise() as HttpResponse<Object>
   }
 
   getUsers = async(workspace_id:string) => {

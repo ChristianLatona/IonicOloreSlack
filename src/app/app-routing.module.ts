@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
-import { SignInComponent } from './sign-in/sign-in.component';
-import { SignUpComponent } from './sign-up/sign-up.component';
-import { WorkspaceComponent } from './workspace/workspace.component';
+import { ChannelComponent } from './components/channel/channel.component';
+import { HomeComponent } from './components/home/home.component';
+import { SignInComponent } from './components/sign-in/sign-in.component';
+import { SignUpComponent } from './components/sign-up/sign-up.component';
+import { WorkspaceComponent } from './components/workspace/workspace.component';
 
 const routes: Routes = [
   {
@@ -23,7 +24,11 @@ const routes: Routes = [
   },
   {
     path: 'workspace',
-    component: WorkspaceComponent
+    component: WorkspaceComponent ,
+    children:[{
+      path: 'channel/:id',
+      component: ChannelComponent
+    }] 
   },
   {
     path: '',

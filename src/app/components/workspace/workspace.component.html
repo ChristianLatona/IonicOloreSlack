@@ -1,0 +1,51 @@
+<!-- side menu -->
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start" class="menu-display">
+      <ion-menu-button menu="main"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Oloreslack
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-menu class="my-custom-menu" side="start" menuId="main" contentId="main">
+  <ion-header>
+    <ion-toolbar color="tertiary">
+      <ion-title>{{workspace_name}}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-list-header class="my-list-header">
+        <ion-label>Channels</ion-label>
+        <ion-button (click)="addChannel()">
+          <ion-icon slot="start" name="add"></ion-icon>
+        </ion-button>
+      </ion-list-header>
+      <ion-item *ngFor="let channel of channels" (click)="navigate(channel.id)">
+        <ion-label>{{channel.name}}</ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ion-list>
+      <ion-list-header class="my-list-header">Users</ion-list-header>
+      <ion-item *ngFor="let user of users" (click)="sendPrivateMessage(user.email)">
+        <ion-label>{{user.username}}</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<!-- main content-->
+
+<!-- <div>
+  <p *ngFor='let number of test'>Ciao {{number}}</p>
+</div> -->
+
+<div id="container" *ngIf="!channelSelected">
+  <strong>No channel selected yet!</strong>
+</div>
+
+
+<ion-router-outlet id="main"></ion-router-outlet>

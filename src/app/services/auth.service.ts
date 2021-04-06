@@ -18,10 +18,7 @@ export class AuthService {
     }
     return error;
   }
-  //Il logout non funziona con panetty, ma funzione con test 2 aprile
-  //Cose strane accadono
-  //Ora funziona, non so perché 3 aprile
-  //unica differenza: aver assegnato il risultato della chiamata ad una variabile
+  
   logout = async(tkn:string) => {
     try{
       let data = await this.http.delete(`${this.genericUrl}logout`,{headers:{tkn}}).toPromise() as Promise<{message:string}>
@@ -39,19 +36,20 @@ export class AuthService {
     }
 
   }
+
   deleteAccount = async (tkn:string) => {
-    let {message} = await this.getEmail(tkn);
+    let data = await this.getEmail(tkn);
     try{
-      return await this.http.delete(`${this.genericUrl}user`,{headers:{email:String(message)}, observe:"response"}).toPromise() as HttpResponse<Object>
+      return await this.http.delete(`${this.genericUrl}user`,{headers:{email:String(data.message)}, observe:"response"}).toPromise() as HttpResponse<Object>
     }catch(e){
       console.log(e)
     }
   }
-  //non funziona, non arriva prorpio alla api 3 aprile 12
-  //riavviato il tutto ora funziona 3 aprile 15
+
   getEmail = async(tkn:string) => {
     try{
-      return await this.http.get(`${this.genericUrl}email`,{headers:{tkn}}).toPromise() as Promise<{message:string}>
+      let data = await this.http.get(`${this.genericUrl}email`,{headers:{tkn}}).toPromise() as Promise<{message:string}>
+      return data
     }catch(e){
       console.log(e)
     }
