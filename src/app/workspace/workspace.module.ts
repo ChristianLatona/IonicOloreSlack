@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SignUpComponent } from './sign-up.component';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { WorkspaceComponent } from './workspace.component';
 
 
 
 @NgModule({
-  declarations: [SignUpComponent],
+  declarations: [WorkspaceComponent],
   imports: [
     CommonModule,
     FormsModule,
     IonicModule
   ],
-  exports:[SignUpComponent]
+  exports:[WorkspaceComponent]
 })
-export class SignUpModule { }
+export class WorkspaceModule { }

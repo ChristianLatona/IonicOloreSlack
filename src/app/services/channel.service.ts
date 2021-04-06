@@ -1,42 +1,42 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChannelService {
-  private genericUrl='http://localhost:4200/channels/'
+  private genericUrl='http://localhost:3000/channels/'
   constructor(private http: HttpClient) { }
 
-  getChannelName(channel_id){
-    return this.http.get(this.genericUrl,{headers:{channel_id:channel_id},observe: 'response' })
+  getChannelName = async(channel_id:string) => {
+    return await this.http.get(`${this.genericUrl}`,{headers:{channel_id},observe: 'response' }).toPromise() as HttpResponse<Object>
   }
 
-  getAllMessages(channel_id){
-    return this.http.get(this.genericUrl+"messages",{headers:{channel_id:channel_id},observe: 'response' })
+  getAllMessages = async(channel_id:string) => {
+    return await this.http.get(`${this.genericUrl}messages`,{headers:{channel_id},observe: 'response' }).toPromise() as HttpResponse<Object>
   }
 
-  getAllUsers(channel_id){
-    return this.http.get(this.genericUrl+"users",{headers:{channel_id:channel_id},observe: 'response' })
+  getAllUsers = async(channel_id:string) => {
+    return await this.http.get(`${this.genericUrl}users`,{headers:{channel_id},observe: 'response' }).toPromise() as HttpResponse<Object>
   }
 
-  getUsername(user_email){
-    return this.http.get(this.genericUrl+"users/user",{headers:{user_email:user_email},observe: 'response' })
+  getUsername = async(user_email:string) => {
+    return await this.http.get(`${this.genericUrl}users/user`,{headers:{user_email},observe: 'response' }).toPromise() as HttpResponse<Object>
   }
 
-  createMessage(channel_id,user_email){
-    return this.http.post(this.genericUrl+"messages",{headers:{channel_id:channel_id,user_email:user_email},observe: 'response' })
+  createMessage = async(channel_id:string,user_email:string) => {
+    return await this.http.post(`${this.genericUrl}messages`, null,{headers:{channel_id:channel_id,user_email:user_email},observe: 'response' }).toPromise() as HttpResponse<Object>
   }
 
-  replyMessage(user_email,message_id){
-    return this.http.post(this.genericUrl+"messages/replies",{headers:{user_email:user_email,message_id:message_id},observe: 'response' })
+  replyMessage = async(user_email:string,message_id:string) => {
+    return await this.http.post(`${this.genericUrl}messages/replies`, null,{headers:{user_email:user_email,message_id:message_id},observe: 'response' }).toPromise() as HttpResponse<Object>
   }
 
-  addToChannel(to_add,channel_id,workspace_id){
-    return this.http.put(this.genericUrl+"add",{headers:{to_add:to_add,channel_id:channel_id,workspace_id:workspace_id},observe: 'response' })
+  addToChannel = async(to_add:string,channel_id:string,workspace_id:string) => {
+    return await this.http.put(`${this.genericUrl}add`, null,{headers:{to_add:to_add,channel_id:channel_id,workspace_id:workspace_id},observe: 'response' }).toPromise() as HttpResponse<Object>
   }
 
-  leaveChannel(user_email,channel_id){
-    return this.http.delete(this.genericUrl+"leave",{headers:{user_email:user_email,channel_id:channel_id},observe: 'response' })
+  leaveChannel = async(user_email:string,channel_id:string) => {
+    return await this.http.delete(this.genericUrl+"leave",{headers:{user_email:user_email,channel_id:channel_id},observe: 'response' }).toPromise() as HttpResponse<Object>
   }
 }

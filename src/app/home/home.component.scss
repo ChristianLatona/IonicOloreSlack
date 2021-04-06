@@ -16,6 +16,11 @@ h1{
     align-self: center;
 }
 
+ion-item{
+    align-self: center;//vedere
+    width:100%
+}
+
 ion-item ion-label{
     font-size: 23px;
     color: red;
@@ -26,3 +31,8 @@ ion-item ion-label{
 ion-button{
     width: 100%;
 }
+
+ion-item.item-has-focus > ion-label{
+    color: #2fdf75 !important;
+}
+

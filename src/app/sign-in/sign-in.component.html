@@ -1,16 +1,19 @@
 <div id="container">
   <p>Sign In</p>
-  <ion-item>
+  <ion-item class="ion-no-padding">
     <ion-label position="stacked">Email</ion-label>
-    <ion-input [(ngModel)]="email"></ion-input>
+    <ion-input [(ngModel)]="email" type="email"></ion-input>
   </ion-item>
   <br>
-  <ion-item>
+  <ion-item class="ion-no-padding">
     <ion-label position="stacked">Password</ion-label>
     <ion-input type="password" [(ngModel)]="password"></ion-input>
   </ion-item>
   <br>
   <ion-button color="danger" (click)="signIn()">Sign In</ion-button>
+  <div *ngIf="gotError">
+    <p style="color:red">{{message}}</p>
+  </div>
   <br><br>
-  <h6 id="grey-p">You don't have an account? <a (click)="navigateToSignUp()">Sign Up</a></h6>
+  <h6 id="grey-p">You don't have an account? <a (click)="navigate('sign-up')">Sign Up</a></h6>
 </div>
