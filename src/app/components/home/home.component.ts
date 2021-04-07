@@ -39,7 +39,9 @@ export class HomeComponent implements OnInit,OnDestroy{
 
   enterWorkspace = (workspace_id:string) => {//Funziona
     sessionStorage.setItem("workspace_id", workspace_id);
-    this.navigate("workspace");
+    setTimeout(() => {
+      this.navigate("workspace");
+    }, 1500)
   }
 
   joinWorkspace = async () => {//Funziona
@@ -47,18 +49,25 @@ export class HomeComponent implements OnInit,OnDestroy{
     if(typeof data != 'string'){
       let {status, body} = data//status, messaggio se ha joinato con successo
       console.log("HomeComponent riga 41", status, body)
-    //this.navigate("workspace")// da fare
+      sessionStorage.setItem('workspace_id', this.work_id);
+      setTimeout(() => {
+        this.navigate("workspace");
+      }, 2500)
     }else{//messaggio d'errore da gestire
       console.log("else join ", data)
     }
-    
   }
 
   createWorkspace = async () => {//Funziona
     let  {status,body} = await this.home.createWorkspace(this.userToken,this.workspaceName)
-    body = body as {message:string, workspaceId:string}
+    let workspace = body as {message:string, workspaceId:string}
     console.log("HomeComponent riga 48", status,body);
-    //status == 200 && this.navigate("workspace");
+    if(status == 200){
+      sessionStorage.setItem("workspace_id", workspace.workspaceId)
+      setTimeout(() => {
+        this.navigate("workspace");
+      }, 2500)
+    }
   }
 
   settingsActionSheet = async() => {

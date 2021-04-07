@@ -1,11 +1,21 @@
+.channel-name{
+    display: inline;
+}
+
+.channel-div{
+    width: 100vw;
+    display: flex;
+    justify-content: space-between;
+}
+
+.channel-buttons{
+    margin-top: 1em;
+}
+
 #message{
     width: 100vw;
 }
 
-// #message h2{
-//     font-size: 20px;
-//     display: block;
-// }
 #message p{
     font-size: 1.2em;
     display: block;
@@ -26,6 +36,7 @@ ion-chip{
     height: 50px;
     position:fixed;
     bottom:20px;
+    background-color: #383a3e;
 }
 
 ion-icon{

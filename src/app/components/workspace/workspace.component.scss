@@ -28,3 +28,12 @@ ion-item{
   font-size: 20px;
   line-height: 26px;
 }
+
+.channel-item {
+  display:flex;
+  justify-content: left;
+}
+
+.channel-item ion-icon {
+  justify-self: right;
+}

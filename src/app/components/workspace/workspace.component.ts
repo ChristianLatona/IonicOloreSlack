@@ -1,10 +1,12 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, MenuController, ModalController } from '@ionic/angular';
+import { ActionSheetController, AlertController, MenuController, ModalController, PopoverController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { ChannelService } from 'src/app/services/channel.service';
+import { PopoverDataService } from 'src/app/services/popoverData.service';
 import { WorkspaceService } from 'src/app/services/workspace.service';
 import { CreateChannelModalComponent } from '../create-channel-modal/create-channel-modal.component';
+import { LeaveChannelPopoverComponent } from '../leave-channel-popover/leave-channel-popover.component';
 
 @Component({
   selector: 'app-workspace',
@@ -19,6 +21,7 @@ export class WorkspaceComponent implements OnInit {
   users:{email:string, username:string}[] = [];
   channelSelected:Boolean=false
   userEmail:string;
+  userToken:string;
 
   constructor(
     private menu:MenuController, 
@@ -27,15 +30,19 @@ export class WorkspaceComponent implements OnInit {
     private alertCtrl:AlertController,
     private router:Router,
     private channelService: ChannelService,
-    private authService: AuthService
+    private authService: AuthService,
+    public actionSheetController: ActionSheetController,
+    public popoverController: PopoverController,
+    private popoverData: PopoverDataService
     ) { }
 
   async ngOnInit() {
     this.workspace_id = sessionStorage.getItem("workspace_id");
-    let userToken = sessionStorage.getItem("userTkn");
-    let value;
-    userToken && (value = await this.authService.getEmail(userToken))
-    this.userEmail = value.message;
+    this.userToken = sessionStorage.getItem("userTkn");
+    let value = await this.authService.getEmail(this.userToken)
+    if(value){
+      this.userEmail = value.message;
+    }
     await this.loadWorkspaceName();
     await this.loadChannels();
     this.setChannelsToShow();
@@ -47,8 +54,11 @@ export class WorkspaceComponent implements OnInit {
     let info:{name:string};
     if(data){
       info = data.body as {name:string}
+      if(info){
+        this.workspace_name = info.name
+      }
     }
-    this.workspace_name = info.name
+    
   }
 
   loadChannels = async () => {
@@ -102,6 +112,66 @@ export class WorkspaceComponent implements OnInit {
       const alert = await this.alertCtrl.create({header: "Success", message: `Channel ${data.name} has been created`, buttons: ["Close"]});
       await alert.present();
     }
+  }
+
+  async leaveChannelPopover(ev: any) {
+    this.popoverData.setUserEmail(this.userEmail)
+    //this.popoverData.setChannelId(this.channelI)
+    const popover = await this.popoverController.create({
+      component: LeaveChannelPopoverComponent,
+      cssClass: 'my-custom-class',
+      event: ev,
+      translucent: true
+    });
+    return await popover.present();
+  }
+
+  settingsActionSheet = async() => {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Account',
+      cssClass: 'my-custom-class',
+      buttons: [{
+        text: 'Delete Account',
+        role: 'destructive',
+        icon: 'trash',
+        handler: async () => {
+          await this.authService.deleteAccount(this.userToken)
+          this.userToken = '';
+          sessionStorage.removeItem("userTkn");
+          sessionStorage.removeItem("username");
+          sessionStorage.removeItem("workspace_id");
+          this.navigate("")
+        }
+      }, {
+        text: 'Logout',
+        icon: 'exit',
+        handler: async () => {
+          await this.authService.logout(this.userToken)
+          sessionStorage.removeItem("userTkn");
+          sessionStorage.removeItem("username");
+          sessionStorage.removeItem("workspace_id");
+          this.navigate("")
+        }
+      }, {
+        text: 'Leave Workspace',
+        icon: 'arrow-undo-outline',
+        handler: async () => {
+          await this.workspaceService.leaveWorkspace(this.userToken,this.workspace_id)// 
+          sessionStorage.removeItem("userTkn");
+          sessionStorage.removeItem("username");
+          sessionStorage.removeItem("workspace_id");
+          this.navigate("home")
+        }
+      }, {
+        text: 'Cancel',
+        icon: 'close',
+        role: 'cancel',
+        handler: () => {
+          console.log('Cancel clicked');
+        }
+      }]
+    });
+    await actionSheet.present();
   }
 
   sendPrivateMessage = (receiverEmail:string) => {
