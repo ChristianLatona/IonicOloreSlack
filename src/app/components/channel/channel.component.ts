@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, Params, Router } from '@angular/router';
 import { IonInfiniteScroll } from '@ionic/angular';
+import { AuthService } from 'src/app/services/auth.service';
 import { ChannelService } from 'src/app/services/channel.service';
 
 @Component({
@@ -11,26 +12,65 @@ import { ChannelService } from 'src/app/services/channel.service';
 export class ChannelComponent implements OnInit, OnDestroy {
 
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
-  //messages:Message[]
-  channel_id: String;
-  navigationSubscription: any;
+  channel_id: string;
+  channel_name:string;
+  userToken:string;
+  userEmail:string;
+  messagesList:any[];
+  usersListWithUsername:{email:string, username:string}[] = [];
+  usersList:any[];
+  messageInput:string;
   constructor(
     private channelService: ChannelService,
+    private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router
-  ) {
-    route.params.subscribe(param => {
+  ) {}
+
+  async ngOnInit() {
+    this.route.params.subscribe(async (param) => {
       this.channel_id = param.id;
-      console.log(this.channel_id);
+      let data = await  this.channelService.getChannelName(this.channel_id);
+      data && (this.channel_name = data.body as string);
+
+      sessionStorage.getItem("userTkn") && (this.userToken = sessionStorage.getItem("userTkn"));
+      let {message} = await this.authService.getEmail(this.userToken);
+      this.userEmail = message;
+      
+      let messages = await this.channelService.getAllMessages(this.channel_id); //Funziona
+      this.messagesList = messages.body as any[]
+      console.log(this.messagesList)
+
+      let users = await this.channelService.getAllUsers(this.channel_id);//Funziona
+      this.usersList = users.body as any[];
+      //console.log(this.usersList);
+      this.getAllUsername();
+      //Da usare quando cicliamo la lista degli utenti per mostrare gli username invece delle email?
+      /* let userUsername = await this.channelService.getUsername(this.usersList[0])
+      console.log(userUsername.body) */ //Funziona 
+
+
     });
   }
 
-  ngOnInit() {//nn funziona bene
+  getAllUsername = () => {
+    this.usersList.forEach(async(email) => {
+      let {body} = await this.channelService.getUsername(email)
+      this.usersListWithUsername.push({email, username: body as string})
+    });
+  }
 
-    /* this.route.params.subscribe(params => {
-      console.log('parent params ', params);
-    }); */
-    //this.channelService.getAllMessages()
+  getUsername = (email:string) => {
+    let user = this.usersListWithUsername.find(user => user.email === email);
+    if(user){
+      return user.username
+    }
+  }
+
+  sendMessage = async() => {
+    await this.channelService.createMessage(this.channel_id, this.userEmail, this.messageInput);
+    this.messageInput = '';
+    this.ngOnInit();
   }
 
   loadData(event) {

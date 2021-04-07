@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HomeModule } from './components/home/home.module';
 import { WorkspaceModule } from './components/workspace/workspace.module';
+import { ChannelModule } from './components/channel/channel.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -29,7 +30,8 @@ import { WorkspaceModule } from './components/workspace/workspace.module';
     HttpClientModule,
     HomeModule,
     WorkspaceModule,
-    RouterModule
+    RouterModule,
+    ChannelModule
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
