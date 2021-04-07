@@ -4,13 +4,13 @@
   </ion-button>
 
   <ion-list>
-    <!-- <div *ngFor="message of messages">
-      <ion-item>
-        <ion-label>{{message.content}}</ion-label>
-        <ion-label>{{message.content}}</ion-label>
-        <ion-label>{{message.date}}</ion-label>
+      <ion-item class="my-item" *ngFor="let message of messagesList">
+        <div id="message">
+          <h3>{{getUsername(message.userId)}}</h3>
+          <p>{{message.content}}</p>
+          <span>{{message.time | date: "HH:mm:ss dd/MM/yyyy"}}</span>
+        </div>
       </ion-item>
-    </div> -->
   </ion-list>
 
   <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
@@ -19,4 +19,9 @@
       loadingText="Loading more data...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
+
+  <ion-chip>
+    <ion-input [(ngModel)]="messageInput" placeholder="write here..."></ion-input>
+    <ion-icon name="arrow-forward-outline" (click)="sendMessage()"></ion-icon>
+  </ion-chip>
 </ion-content>

@@ -1,5 +1,6 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { async } from '@angular/core/testing';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,14 @@ export class ChannelService {
 
   getChannelName = async(channel_id:string) => {
     return await this.http.get(`${this.genericUrl}`,{headers:{channel_id},observe: 'response' }).toPromise() as HttpResponse<Object>
+  }
+
+  getChannelPrivacy = async(channel_id:string) => {
+    try {
+      return await this.http.get(`${this.genericUrl}privacy`,{headers: {channel_id}, observe: 'response'}).toPromise() as HttpResponse<Object>
+    } catch ({error:{message}}) {
+      console.log(message)
+    }
   }
 
   getAllMessages = async(channel_id:string) => {
@@ -24,19 +33,20 @@ export class ChannelService {
     return await this.http.get(`${this.genericUrl}users/user`,{headers:{user_email},observe: 'response' }).toPromise() as HttpResponse<Object>
   }
 
-  createMessage = async(channel_id:string,user_email:string) => {
-    return await this.http.post(`${this.genericUrl}messages`, null,{headers:{channel_id:channel_id,user_email:user_email},observe: 'response' }).toPromise() as HttpResponse<Object>
+  createMessage = async(channel_id:string,user_email:string, content:string) => {
+    return await this.http.post(`${this.genericUrl}messages`, {content},{headers:{channel_id:channel_id,user_email:user_email},observe: 'response' }).toPromise() as HttpResponse<Object>
   }
 
-  replyMessage = async(user_email:string,message_id:string) => {
-    return await this.http.post(`${this.genericUrl}messages/replies`, null,{headers:{user_email:user_email,message_id:message_id},observe: 'response' }).toPromise() as HttpResponse<Object>
+  replyMessage = async(user_email:string,message_id:string, content:string) => {
+    return await this.http.post(`${this.genericUrl}messages/replies`, {content},{headers:{user_email:user_email,message_id:message_id},observe: 'response' }).toPromise() as HttpResponse<Object>
   }
 
   addToChannel = async(to_add:string,channel_id:string,workspace_id:string) => {
-    return await this.http.put(`${this.genericUrl}add`, null,{headers:{to_add:to_add,channel_id:channel_id,workspace_id:workspace_id},observe: 'response' }).toPromise() as HttpResponse<Object>
+    console.log("Service addToChannel", to_add, channel_id, workspace_id)
+    //return await this.http.put(`${this.genericUrl}add`, null,{headers:{to_add:to_add,channel_id:channel_id,workspace_id:workspace_id},observe: 'response' }).toPromise() as HttpResponse<Object>
   }
 
   leaveChannel = async(user_email:string,channel_id:string) => {
-    return await this.http.delete(this.genericUrl+"leave",{headers:{user_email:user_email,channel_id:channel_id},observe: 'response' }).toPromise() as HttpResponse<Object>
+    return await this.http.delete(`${this.genericUrl}leave`,{headers:{user_email:user_email,channel_id:channel_id},observe: 'response' }).toPromise() as HttpResponse<Object>
   }
 }

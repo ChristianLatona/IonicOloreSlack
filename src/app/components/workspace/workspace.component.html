@@ -23,7 +23,7 @@
           <ion-icon slot="start" name="add"></ion-icon>
         </ion-button>
       </ion-list-header>
-      <ion-item *ngFor="let channel of channels" routerLink='/workspace/channel/{{channel.id}}'><!--(click)="navigate(channel.id)"-->
+      <ion-item *ngFor="let channel of channelsToShow" routerLink='/workspace/channel/{{channel.id}}'>
         <ion-label>{{channel.name}}</ion-label>
       </ion-item>
     </ion-list>

@@ -1,0 +1,40 @@
+#message{
+    width: 100vw;
+}
+
+// #message h2{
+//     font-size: 20px;
+//     display: block;
+// }
+#message p{
+    font-size: 1.2em;
+    display: block;
+}
+#message span{
+    color: grey;
+    display: block;
+    text-align: right;
+    font-style: italic;
+}
+
+.my-item{
+    --ion-item-background: #121212 !important
+}
+
+ion-chip{
+    width: 98vw;
+    height: 50px;
+    position:fixed;
+    bottom:20px;
+}
+
+ion-icon{
+    color:white;
+    font-size: 2em;
+}
+
+ion-input{
+    color:white;
+    font-size: 2em;
+}
+
