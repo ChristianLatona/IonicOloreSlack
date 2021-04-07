@@ -1,15 +1,16 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, Params, Router } from '@angular/router';
-import { IonInfiniteScroll } from '@ionic/angular';
+import { IonInfiniteScroll, ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { ChannelService } from 'src/app/services/channel.service';
+import { ShowUsersModalComponent } from '../show-users-modal/show-users-modal.component';
 
 @Component({
   selector: 'app-channel',
   templateUrl: './channel.component.html',
   styleUrls: ['./channel.component.scss'],
 })
-export class ChannelComponent implements OnInit, OnDestroy {
+export class ChannelComponent implements OnInit {
 
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   channel_id: string;
@@ -24,7 +25,8 @@ export class ChannelComponent implements OnInit, OnDestroy {
     private channelService: ChannelService,
     private authService: AuthService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private modalCtrl:ModalController
   ) {}
 
   async ngOnInit() {
@@ -73,6 +75,18 @@ export class ChannelComponent implements OnInit, OnDestroy {
     this.ngOnInit();
   }
 
+  showUsers = async () => {
+    const modal = await this.modalCtrl.create({
+      component: ShowUsersModalComponent,
+      cssClass: 'my-modal-wrapper',
+      componentProps: {
+        usersList: this.usersListWithUsername
+      }
+    });
+
+    return await modal.present();
+  }
+
   loadData(event) {
     setTimeout(() => {
       console.log('Done');
@@ -91,8 +105,5 @@ export class ChannelComponent implements OnInit, OnDestroy {
     this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
   }
 
-  ngOnDestroy() {
-    //this.navigationSubscription.unsubscribe();
-  }
 
 }

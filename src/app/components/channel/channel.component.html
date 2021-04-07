@@ -2,7 +2,15 @@
   <ion-button (click)="toggleInfiniteScroll()" expand="block">
     Toggle Infinite Scroll
   </ion-button>
-
+  <ion-item>
+    <div class="channel-div">
+      <h2 class="channel-name">{{channel_name}}</h2>
+      <ion-buttons class="channel-buttons">
+        <ion-button (click)="showUsers()">Users</ion-button>
+        <ion-button>Add user</ion-button>
+      </ion-buttons>
+    </div>
+  </ion-item>
   <ion-list>
       <ion-item class="my-item" *ngFor="let message of messagesList">
         <div id="message">

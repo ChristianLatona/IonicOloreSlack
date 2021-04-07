@@ -39,7 +39,9 @@ export class HomeComponent implements OnInit,OnDestroy{
 
   enterWorkspace = (workspace_id:string) => {//Funziona
     sessionStorage.setItem("workspace_id", workspace_id);
-    this.navigate("workspace");
+    setTimeout(() => {
+      this.navigate("workspace");
+    }, 1500)
   }
 
   joinWorkspace = async () => {//Funziona
@@ -48,7 +50,9 @@ export class HomeComponent implements OnInit,OnDestroy{
       let {status, body} = data//status, messaggio se ha joinato con successo
       console.log("HomeComponent riga 41", status, body)
       sessionStorage.setItem('workspace_id', this.work_id);
-      this.navigate("workspace")
+      setTimeout(() => {
+        this.navigate("workspace");
+      }, 2500)
     }else{//messaggio d'errore da gestire
       console.log("else join ", data)
     }
@@ -60,7 +64,9 @@ export class HomeComponent implements OnInit,OnDestroy{
     console.log("HomeComponent riga 48", status,body);
     if(status == 200){
       sessionStorage.setItem("workspace_id", workspace.workspaceId)
-      this.navigate("workspace");
+      setTimeout(() => {
+        this.navigate("workspace");
+      }, 2500)
     }
   }
 

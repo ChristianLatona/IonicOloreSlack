@@ -23,8 +23,8 @@
           <ion-icon slot="start" name="add"></ion-icon>
         </ion-button>
       </ion-list-header>
-      <ion-item *ngFor="let channel of channelsToShow" routerLink='/workspace/channel/{{channel.id}}'>
-        <ion-label>{{channel.name}}</ion-label>
+      <ion-item class="channel-item" *ngFor="let channel of channelsToShow" routerLink='/workspace/channel/{{channel.id}}'>
+        <ion-label>{{channel.name}}</ion-label> <ion-icon name="alert-outline" (click)="leaveChannelPopover(channel.id)"></ion-icon><!--(click)="leaveChannelPopover(channel.id)"-->
       </ion-item>
     </ion-list>
 
@@ -35,6 +35,7 @@
       </ion-item>
     </ion-list>
   </ion-content>
+  <ion-button expand="block" color="danger" style="width:100%" (click)="settingsActionSheet()">Settings <ion-icon name="settings-outline"></ion-icon></ion-button>
 </ion-menu>
 
 <!-- main content-->
