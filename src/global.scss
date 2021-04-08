@@ -34,3 +34,15 @@
     height: 250px;
     width: 250px;
 }
+
+body{
+    color:white
+}
+
+ion-item{
+    border-radius:5px !important
+}
+
+.my-custom-class {
+    --background: #222 !important;
+  }
