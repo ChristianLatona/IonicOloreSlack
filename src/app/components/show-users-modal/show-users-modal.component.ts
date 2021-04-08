@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-show-users-modal',
@@ -7,10 +8,14 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class ShowUsersModalComponent implements OnInit {
   @Input() usersList:{email:string, username:string}[]
-  constructor() { }
+  constructor(private modalCtrl:ModalController) { }
 
   ngOnInit() {
-    console.log(this.usersList)
+    
+  }
+
+  dismissModal = () => {
+    this.modalCtrl.dismiss();
   }
 
 }
