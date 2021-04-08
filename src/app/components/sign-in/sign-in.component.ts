@@ -20,6 +20,7 @@ export class SignInComponent {
   }
 
   signIn = async () => {
+    this.message=""
     if (this.email != "" && this.password != "") {
       const data = await this.auth.signIn(this.email, this.password);
       if(typeof data === "string"){

@@ -22,6 +22,7 @@ export class WorkspaceComponent implements OnInit {
   channelSelected:Boolean=false
   userEmail:string;
   userToken:string;
+  channelId:string;
 
   constructor(
     private menu:MenuController, 
@@ -58,7 +59,6 @@ export class WorkspaceComponent implements OnInit {
         this.workspace_name = info.name
       }
     }
-    
   }
 
   loadChannels = async () => {
@@ -116,7 +116,7 @@ export class WorkspaceComponent implements OnInit {
 
   async leaveChannelPopover(ev: any) {
     this.popoverData.setUserEmail(this.userEmail)
-    //this.popoverData.setChannelId(this.channelI)
+    this.popoverData.setChannelId(this.channelId)
     const popover = await this.popoverController.create({
       component: LeaveChannelPopoverComponent,
       cssClass: 'my-custom-class',
@@ -140,7 +140,7 @@ export class WorkspaceComponent implements OnInit {
           sessionStorage.removeItem("userTkn");
           sessionStorage.removeItem("username");
           sessionStorage.removeItem("workspace_id");
-          this.navigate("")
+          this.router.navigate([""])
         }
       }, {
         text: 'Logout',
@@ -150,7 +150,7 @@ export class WorkspaceComponent implements OnInit {
           sessionStorage.removeItem("userTkn");
           sessionStorage.removeItem("username");
           sessionStorage.removeItem("workspace_id");
-          this.navigate("")
+          this.router.navigate([""])
         }
       }, {
         text: 'Leave Workspace',
@@ -160,7 +160,7 @@ export class WorkspaceComponent implements OnInit {
           sessionStorage.removeItem("userTkn");
           sessionStorage.removeItem("username");
           sessionStorage.removeItem("workspace_id");
-          this.navigate("home")
+          this.router.navigate(["/home"])
         }
       }, {
         text: 'Cancel',

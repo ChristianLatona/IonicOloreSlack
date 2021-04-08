@@ -16,6 +16,8 @@ export class HomeComponent implements OnInit,OnDestroy{
   //purpleColor="rgb(156,3,177)"
   work_id:string//conservare qui l'id della workspace cliccata
   workspaceName:string
+  gotError:boolean
+  message:string
 
   constructor(public actionSheetController: ActionSheetController, private home:HomeService, private auth:AuthService, private router: Router) {}
   
@@ -52,8 +54,10 @@ export class HomeComponent implements OnInit,OnDestroy{
       sessionStorage.setItem('workspace_id', this.work_id);
       setTimeout(() => {
         this.navigate("workspace");
-      }, 2500)
+      }, 1000)
     }else{//messaggio d'errore da gestire
+      this.gotError = true
+      this.message = data;
       console.log("else join ", data)
     }
   }
