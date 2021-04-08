@@ -36,7 +36,11 @@ export class WorkspaceService {
   }
 
   leaveWorkspace = async(tkn:string,workspace_id:string) => {
-    return await this.http.delete(`${this.genericUrl}leave`,{headers:{tkn:tkn,workspace_id:workspace_id},observe: 'response' }).toPromise() as HttpResponse<Object>
+    try{
+      return await this.http.delete(`${this.genericUrl}leave`,{headers:{tkn:tkn,workspace_id:workspace_id},observe: 'response' }).toPromise() as HttpResponse<Object>
+    }catch({error:{message}}){
+      console.log(message)
+    }
   }
 
   deleteChannel = async(workspace_id:string,channel_id:string) => {
