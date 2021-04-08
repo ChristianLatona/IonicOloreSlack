@@ -22,7 +22,7 @@ ion-item{
 
 ion-item ion-label{
     font-size: 23px;
-    color: red;
+    color: #fc3650;
     font-weight:500;
     padding-inline-start: 0;
 }
@@ -32,6 +32,6 @@ ion-button{
 }
 
 ion-item.item-has-focus > ion-label{
-    color: red !important;
+    color: #fc3650 !important;
 }
 

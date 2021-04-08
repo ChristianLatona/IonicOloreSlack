@@ -1,4 +1,5 @@
 import { Component, OnInit,Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { ChannelService } from 'src/app/services/channel.service';
 import { PopoverDataService } from 'src/app/services/popoverData.service';
 
@@ -9,7 +10,7 @@ import { PopoverDataService } from 'src/app/services/popoverData.service';
 })
 export class LeaveChannelPopoverComponent {
   
-  constructor(private popoverData:PopoverDataService,private channelService:ChannelService) { }
+  constructor(private popoverData:PopoverDataService,private channelService:ChannelService,private router:Router) { }
   userEmail:string
   channelId:string
 
@@ -19,7 +20,10 @@ export class LeaveChannelPopoverComponent {
   }
 
   leaveChannel=()=>{
-    this.channelService.leaveChannel(this.userEmail,this.channelId)
+    console.log('email: ',this.userEmail," channelId: ",this.channelId)
+    //this.channelService.leaveChannel(this.userEmail,this.channelId)
+    console.log("deleted")
+    this.router.navigate(['/workspace'])
   }
 
 }
