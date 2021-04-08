@@ -25,7 +25,11 @@ export class SignUpComponent{
   async register(){
     this.showMessage = true;
     if(this.password===this.confirmPassword ){
-      const data = await this.auth.register(this.username,this.email,this.password)
+      let data
+      try {
+        data = await this.auth.register(this.username,this.email,this.password)
+      }catch(err){}
+      
       if(typeof data != 'string'){
         this.showSuccess = true;
         this.message = "Succesfull registration, You will be redirected to the login."

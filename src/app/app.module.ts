@@ -15,7 +15,6 @@ import { CommonModule } from '@angular/common';
 import { HomeModule } from './components/home/home.module';
 import { WorkspaceModule } from './components/workspace/workspace.module';
 import { ChannelModule } from './components/channel/channel.module';
-import { ShowUserModalModule } from './components/show-users-modal/show-user-modal.module';
 import { ShowUsersModalComponent } from './components/show-users-modal/show-users-modal.component';
 
 @NgModule({
