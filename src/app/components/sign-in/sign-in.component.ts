@@ -22,7 +22,11 @@ export class SignInComponent {
   signIn = async () => {
     this.message=""
     if (this.email != "" && this.password != "") {
-      const data = await this.auth.signIn(this.email, this.password);
+      let data
+      try{
+        data = await this.auth.signIn(this.email, this.password);
+      }catch(err){}
+        
       if(typeof data === "string"){
         this.gotError = true
         this.message = data;
