@@ -18,8 +18,13 @@ export class WorkspaceService {
     }
   }
 
-  createChannel = async(workspace_id:string,tkn:string,channelName:string,privacy:Boolean) => {
-    return await this.http.post(`${this.genericUrl}channels`,{channelName,privacy},{headers:{workspace_id:workspace_id,tkn},observe: 'response' }).toPromise() as HttpResponse<Object>
+  createChannel = async(workspace_id:string,tkn:string,channelName:string,privacy:boolean) => {
+    try{
+      console.log(workspace_id, tkn, channelName, privacy)
+      return await this.http.post(`${this.genericUrl}channels`,{channelName,privacy},{headers:{workspace_id,tkn},observe: 'response' }).toPromise() as HttpResponse<Object>
+    }catch({error:{message}}){
+      console.log(message)
+    }
   }
 
   getChannels = async(workspace_id:string) => {

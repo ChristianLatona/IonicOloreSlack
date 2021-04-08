@@ -30,7 +30,7 @@
     display: inline;
 }
 
-.modal-wrapper.sc-ion-modal-md{
+.my-modal .modal-wrapper.sc-ion-modal-md{
     height: 250px;
     width: 250px;
 }
@@ -45,4 +45,10 @@ ion-item{
 
 .my-custom-class {
     --background: #222 !important;
-  }
+}
+
+.logo{
+    height: 30px;
+    width: 30px;
+    display: inline-block;
+}

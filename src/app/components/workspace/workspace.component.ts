@@ -14,15 +14,15 @@ import { LeaveChannelPopoverComponent } from '../leave-channel-popover/leave-cha
   styleUrls: ['./workspace.component.scss'],
 })
 export class WorkspaceComponent implements OnInit {
-  workspace_id:string;
-  workspace_name:string;
+  workspace_id:string = '';
+  workspace_name:string = '';
   allChannels:{id:string, name:string}[] = [];
   channelsToShow:{id:string, name:string}[] = [];
   users:{email:string, username:string}[] = [];
   channelSelected:Boolean=false
-  userEmail:string;
-  userToken:string;
-  channelId:string;
+  userEmail:string = '';
+  userToken:string = '';
+  channelId:string = '';
 
   constructor(
     private menu:MenuController, 
@@ -47,7 +47,11 @@ export class WorkspaceComponent implements OnInit {
     await this.loadWorkspaceName();
     await this.loadChannels();
     this.setChannelsToShow();
-    await this.loadUsers();
+    await this.loadUsers(); 
+  }
+
+  async ionViewDidEnter(){
+    
   }
 
   loadWorkspaceName = async() => {
@@ -88,9 +92,6 @@ export class WorkspaceComponent implements OnInit {
   navigate = (selectedChannel:string) => {
     this.channelSelected=true
     this.router.navigateByUrl(`/channel/${selectedChannel}`);
-    /*
-      Usare il routerLink con il routerOutlet o usare il selector app-channel con EventEmitter?
-    */
   }
 
   checkIfInChannel = async(channelId:string) => {
@@ -103,12 +104,33 @@ export class WorkspaceComponent implements OnInit {
     const modal = await this.modalCtrl.create({
       component: CreateChannelModalComponent
     });
-
+    
     await modal.present();
 
+    /* modal.onDidDismiss().then(async(value) => {
+      let {data, role} = value;
+      if(role == 'created'){
+        let {name, privacy} = data;
+        let privac:boolean = false;
+        if(privacy == 'true'){
+          privac = true;
+        }
+        this.workspaceService.createChannel(this.workspace_id, this.userToken, name, privac)
+        const alert = await this.alertCtrl.create({header: "Success", message: `Channel ${data.name} has been created`, buttons: ["Close"]});
+        await alert.present();
+        this.ngOnInit();
+      }
+    }) */
+    
     const {data, role} = await modal.onWillDismiss();
     if(role === 'created'){
-      console.log(data)//qui si richiama il service per la creazione del canale e si ricarica la pagina
+      console.log(data)
+      let {name, privacy} = data
+      let privac:boolean = false;
+      if(privacy == 'true'){
+        privac = true;
+      }
+      this.workspaceService.createChannel(this.workspace_id, this.userToken, name, privac)
       const alert = await this.alertCtrl.create({header: "Success", message: `Channel ${data.name} has been created`, buttons: ["Close"]});
       await alert.present();
     }
@@ -123,10 +145,16 @@ export class WorkspaceComponent implements OnInit {
       event: ev,
       translucent: true
     });
-    return await popover.present();
+
+    /* popover.onDidDismiss().then(() => {
+      this.ngOnInit();
+    }) */
+
+    await popover.present();
+    
   }
 
-  settingsActionSheet = async() => {
+  async settingsActionSheet() {
     const actionSheet = await this.actionSheetController.create({
       header: 'Account',
       cssClass: 'my-custom-class',
@@ -171,6 +199,7 @@ export class WorkspaceComponent implements OnInit {
         }
       }]
     });
+    console.log('puresento settingsActionSheet')
     await actionSheet.present();
   }
 
