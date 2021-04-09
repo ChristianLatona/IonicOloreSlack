@@ -1,3 +1,15 @@
-<p>
-  add-user-modal works!
-</p>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Add users</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-item>
+    <ion-label position="floating" class="">User/s email:</ion-label>
+    <ion-input [formControl]="usersToAdd" type="text"></ion-input>
+  </ion-item>
+  <ion-button [disabled]="usersToAdd.invalid" expand="block" (click)="add()" class="ion-margin-top" color="danger">Add</ion-button>
+</ion-content>

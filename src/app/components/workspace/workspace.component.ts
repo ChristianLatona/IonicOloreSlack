@@ -14,34 +14,34 @@ import { LeaveChannelPopoverComponent } from '../leave-channel-popover/leave-cha
   styleUrls: ['./workspace.component.scss'],
 })
 export class WorkspaceComponent implements OnInit {
-  workspace_id:string;
-  workspace_name:string;
-  allChannels:{id:string, name:string}[] = [];
-  channelsToShow:{id:string, name:string}[] = [];
-  users:{email:string, username:string}[] = [];
-  channelSelected:Boolean=false
-  userEmail:string;
-  userToken:string;
-  channelId:string;
+  workspace_id: string = '';
+  workspace_name: string = '';
+  allChannels: { id: string, name: string }[] = [];
+  channelsToShow: { id: string, name: string }[] = [];
+  users: { email: string, username: string }[] = [];
+  channelSelected: Boolean = false
+  userEmail: string = '';
+  userToken: string = '';
+  channelId: string = '';
 
   constructor(
-    private menu:MenuController, 
-    private workspaceService:WorkspaceService, 
-    private modalCtrl:ModalController,
-    private alertCtrl:AlertController,
-    private router:Router,
+    private menu: MenuController,
+    private workspaceService: WorkspaceService,
+    private modalCtrl: ModalController,
+    private alertCtrl: AlertController,
+    private router: Router,
     private channelService: ChannelService,
     private authService: AuthService,
     public actionSheetController: ActionSheetController,
     public popoverController: PopoverController,
     private popoverData: PopoverDataService
-    ) { }
+  ) { }
 
   async ngOnInit() {
     this.workspace_id = sessionStorage.getItem("workspace_id");
     this.userToken = sessionStorage.getItem("userTkn");
     let value = await this.authService.getEmail(this.userToken)
-    if(value){
+    if (value) {
       this.userEmail = value.message;
     }
     await this.loadWorkspaceName();
@@ -50,29 +50,33 @@ export class WorkspaceComponent implements OnInit {
     await this.loadUsers();
   }
 
-  loadWorkspaceName = async() => {
+  async ionViewDidEnter() {
+
+  }
+
+  loadWorkspaceName = async () => {
     let data = await this.workspaceService.getWorkspaceName(this.workspace_id);
-    let info:{name:string};
-    if(data){
-      info = data.body as {name:string}
-      if(info){
+    let info: { name: string };
+    if (data) {
+      info = data.body as { name: string }
+      if (info) {
         this.workspace_name = info.name
       }
     }
   }
 
   loadChannels = async () => {
-    let {body} = await this.workspaceService.getChannels(this.workspace_id)
-    this.allChannels = body as {id:string, name:string}[]
+    let { body } = await this.workspaceService.getChannels(this.workspace_id)
+    this.allChannels = body as { id: string, name: string }[]
   }
 
   setChannelsToShow = () => {
     this.allChannels.forEach(async (channel) => {
       let data = await this.channelService.getChannelPrivacy(channel.id);
-      let {privacy} = data.body as {privacy:Boolean}
-      if(privacy){
+      let { privacy } = data.body as { privacy: Boolean }
+      if (privacy) {
         let value = await this.checkIfInChannel(channel.id)
-        if(!value){
+        if (!value) {
           return
         }
       }
@@ -81,20 +85,17 @@ export class WorkspaceComponent implements OnInit {
   }
 
   loadUsers = async () => {
-    let {body} = await this.workspaceService.getUsers(this.workspace_id)
-    this.users = body as {email:string, username:string}[]
+    let { body } = await this.workspaceService.getUsers(this.workspace_id)
+    this.users = body as { email: string, username: string }[]
   }
 
-  navigate = (selectedChannel:string) => {
-    this.channelSelected=true
+  navigate = (selectedChannel: string) => {
+    this.channelSelected = true
     this.router.navigateByUrl(`/channel/${selectedChannel}`);
-    /*
-      Usare il routerLink con il routerOutlet o usare il selector app-channel con EventEmitter?
-    */
   }
 
-  checkIfInChannel = async(channelId:string) => {
-    let {body} = await this.channelService.getAllUsers(channelId);
+  checkIfInChannel = async (channelId: string) => {
+    let { body } = await this.channelService.getAllUsers(channelId);
     let users = body as String[];
     return users.includes(this.userEmail)
   }
@@ -106,10 +107,31 @@ export class WorkspaceComponent implements OnInit {
 
     await modal.present();
 
-    const {data, role} = await modal.onWillDismiss();
-    if(role === 'created'){
-      console.log(data)//qui si richiama il service per la creazione del canale e si ricarica la pagina
-      const alert = await this.alertCtrl.create({header: "Success", message: `Channel ${data.name} has been created`, buttons: ["Close"]});
+    /* modal.onDidDismiss().then(async(value) => {
+      let {data, role} = value;
+      if(role == 'created'){
+        let {name, privacy} = data;
+        let privac:boolean = false;
+        if(privacy == 'true'){
+          privac = true;
+        }
+        this.workspaceService.createChannel(this.workspace_id, this.userToken, name, privac)
+        const alert = await this.alertCtrl.create({header: "Success", message: `Channel ${data.name} has been created`, buttons: ["Close"]});
+        await alert.present();
+        this.ngOnInit();
+      }
+    }) */
+
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'created') {
+      console.log(data)
+      let { name, privacy } = data
+      let privac: boolean = false;
+      if (privacy == 'true') {
+        privac = true;
+      }
+      this.workspaceService.createChannel(this.workspace_id, this.userToken, name, privac)
+      const alert = await this.alertCtrl.create({ header: "Success", message: `Channel ${data.name} has been created`, buttons: ["Close"] });
       await alert.present();
     }
   }
@@ -123,10 +145,16 @@ export class WorkspaceComponent implements OnInit {
       event: ev,
       translucent: true
     });
-    return await popover.present();
+
+    /* popover.onDidDismiss().then(() => {
+      this.ngOnInit();
+    }) */
+
+    await popover.present();
+
   }
 
-  settingsActionSheet = async() => {
+  async settingsActionSheet() {
     const actionSheet = await this.actionSheetController.create({
       header: 'Account',
       cssClass: 'my-custom-class',
@@ -153,12 +181,17 @@ export class WorkspaceComponent implements OnInit {
           this.router.navigate([""])
         }
       }, {
+        text: 'Return to home',
+        icon: 'home',
+        handler: async () => {
+          sessionStorage.removeItem("workspace_id");
+          this.router.navigate(["/home"])
+        }
+      }, {
         text: 'Leave Workspace',
         icon: 'arrow-undo-outline',
         handler: async () => {
-          await this.workspaceService.leaveWorkspace(this.userToken,this.workspace_id)// 
-          sessionStorage.removeItem("userTkn");
-          sessionStorage.removeItem("username");
+          await this.workspaceService.leaveWorkspace(this.userToken, this.workspace_id)
           sessionStorage.removeItem("workspace_id");
           this.router.navigate(["/home"])
         }
@@ -171,12 +204,13 @@ export class WorkspaceComponent implements OnInit {
         }
       }]
     });
+    console.log('puresento settingsActionSheet')
     await actionSheet.present();
   }
 
-  sendPrivateMessage = (receiverEmail:string) => {
+  sendPrivateMessage = (receiverEmail: string) => {
     console.log("sendPrivateMessage", receiverEmail)
-  } 
+  }
 
   openFirst() {
     this.menu.enable(true, 'main');

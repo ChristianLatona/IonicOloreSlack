@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { ChannelComponent } from './channel.component';
-import { ActivatedRouteSnapshot } from '@angular/router';
+import { AddUserModalComponent } from '../add-user-modal/add-user-modal.component';
+import { ShowUsersModalComponent } from '../show-users-modal/show-users-modal.component';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { ActivatedRouteSnapshot } from '@angular/router';
     IonicModule,
     ReactiveFormsModule
   ],
-  declarations: [ChannelComponent],
-  exports: [ChannelComponent]
+  declarations: [ChannelComponent, AddUserModalComponent, ShowUsersModalComponent],
+  exports: [ChannelComponent],
+  entryComponents: [AddUserModalComponent, ShowUsersModalComponent]
 })
 export class ChannelModule { }

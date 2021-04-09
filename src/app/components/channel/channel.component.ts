@@ -1,8 +1,10 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { ResourceLoader } from '@angular/compiler';
+import { Component, OnInit, ViewChild, OnDestroy, Input } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, Params, Router } from '@angular/router';
-import { IonInfiniteScroll, ModalController } from '@ionic/angular';
+import { AlertController, IonInfiniteScroll, ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { ChannelService } from 'src/app/services/channel.service';
+import { AddUserModalComponent } from '../add-user-modal/add-user-modal.component';
 import { ShowUsersModalComponent } from '../show-users-modal/show-users-modal.component';
 
 @Component({
@@ -13,6 +15,7 @@ import { ShowUsersModalComponent } from '../show-users-modal/show-users-modal.co
 export class ChannelComponent implements OnInit {
 
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
+  workspace_id:string;
   channel_id: string;
   channel_name:string;
   userToken:string;
@@ -26,10 +29,12 @@ export class ChannelComponent implements OnInit {
     private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
-    private modalCtrl:ModalController
+    private modalCtrl:ModalController,
+    private alertCtrl:AlertController
   ) {}
 
   async ngOnInit() {
+    this.workspace_id = sessionStorage.getItem("workspace_id");
     this.route.params.subscribe(async (param) => {
       this.channel_id = param.id;
       let data = await  this.channelService.getChannelName(this.channel_id);
@@ -43,16 +48,34 @@ export class ChannelComponent implements OnInit {
       this.messagesList = messages.body as any[]
       console.log(this.messagesList)
 
-      let users = await this.channelService.getAllUsers(this.channel_id);//Funziona
-      this.usersList = users.body as any[];
-      //console.log(this.usersList);
-      this.getAllUsername();
+      await this.loadUser();
       //Da usare quando cicliamo la lista degli utenti per mostrare gli username invece delle email?
       /* let userUsername = await this.channelService.getUsername(this.usersList[0])
       console.log(userUsername.body) */ //Funziona 
-
-
     });
+  }
+
+  loadUser = async () => {
+      let users = await this.channelService.getAllUsers(this.channel_id);//Funziona
+      this.usersList = users.body as any[];
+      this.getAllUsername();
+  }
+
+  addUserToChannel = async() =>{
+    const modal = await this.modalCtrl.create({
+      component: AddUserModalComponent
+    });
+    
+    await modal.present();
+
+    const {data, role} = await modal.onWillDismiss();
+    if(role === 'added'){
+      console.log(data)
+      await this.channelService.addToChannel(data,this.channel_id,this.workspace_id);
+      this.usersListWithUsername = [];
+      this.loadUser();
+    }
+    
   }
 
   getAllUsername = () => {
@@ -78,7 +101,7 @@ export class ChannelComponent implements OnInit {
   showUsers = async () => {
     const modal = await this.modalCtrl.create({
       component: ShowUsersModalComponent,
-      cssClass: 'my-modal-wrapper',
+      cssClass: 'my-modal',
       componentProps: {
         usersList: this.usersListWithUsername
       }

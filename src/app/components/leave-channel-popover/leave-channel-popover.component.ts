@@ -21,7 +21,7 @@ export class LeaveChannelPopoverComponent {
 
   leaveChannel=()=>{
     console.log('email: ',this.userEmail," channelId: ",this.channelId)
-    //this.channelService.leaveChannel(this.userEmail,this.channelId)
+    this.channelService.leaveChannel(this.userEmail,this.channelId)
     console.log("deleted")
     this.router.navigate(['/workspace'])
   }

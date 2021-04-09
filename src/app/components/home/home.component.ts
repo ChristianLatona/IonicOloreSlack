@@ -54,7 +54,7 @@ export class HomeComponent implements OnInit,OnDestroy{
       sessionStorage.setItem('workspace_id', this.work_id);
       setTimeout(() => {
         this.navigate("workspace");
-      }, 1000)
+      }, 2500)
     }else{//messaggio d'errore da gestire
       this.gotError = true
       this.message = data;
@@ -70,7 +70,7 @@ export class HomeComponent implements OnInit,OnDestroy{
       sessionStorage.setItem("workspace_id", workspace.workspaceId)
       setTimeout(() => {
         this.navigate("workspace");
-      }, 2500)
+      }, 3500)
     }
   }
 
